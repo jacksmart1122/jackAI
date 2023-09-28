@@ -1,0 +1,37 @@
+<html>
+<head>
+    <title>狗的照片辨識</title>
+</head>
+<body>
+    <h1>狗照片辨識</h1>
+    <!-- 在這裡添加表單和上傳圖片的部分 -->
+    <form id="imageUploadForm" action="/predict" method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+        <input type="submit" value="預測">
+    </form>
+    <div id="predictionResult">
+        <!-- 預測結果將顯示在這裡 -->
+    </div>
+
+    <script>
+        // 使用 JavaScript 處理表單提交和預測結果顯示
+        document.getElementById("imageUploadForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 防止表單正常提交
+            var formData = new FormData(this);
+
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(result => {
+                // 將預測結果顯示在網頁上
+                document.getElementById("predictionResult").innerText = result;
+            })
+            .catch(error => {
+                console.error("發生錯誤:", error);
+            });
+        });
+    </script>
+</body>
+</html>
